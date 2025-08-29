@@ -1,9 +1,7 @@
-if (Test-Path D:\1.txt -PathType Leaf) {
-	echo "Volume need to update"; echo "Updating....";
-        sleep 2; 
-        Copy-Item -Path "D:\update\Epic\EpicGamesLauncher" -Destination "C:\ProgramData\Epic" -Recurse -Force -ErrorAction SilentlyContinue;
-        Copy-Item -Path "D:\update\EA\InstallData" -Destination "C:\ProgramData\EA Desktop\" -Recurse -Force  -ErrorAction SilentlyContinue;
-        Copy-Item -Path "D:\update\riot\Metadata" -Destination "C:\ProgramData\Riot Games\" -Recurse -Force  -ErrorAction SilentlyContinue
-        echo "Update successful!"
-        del D:\1.txt
-	} else {echo "Already Update"}
+do {
+Test-Connection 192.168.88.253 -Count 3 -ErrorAction SilentlyContinue | Out-Null
+} until ($? -eq $True)
+Get-ChildItem -Path D:\update\ -Include * | remove-Item -recurse
+Copy-Item -Path "C:\ProgramData\EA Desktop\InstallData" -Destination "D:\update\EA\InstallData" -Recurse -Force -ErrorAction SilentlyContinue
+Copy-Item -Path "C:\ProgramData\Epic\EpicGamesLauncher" -Destination "D:\update\Epic\EpicGamesLauncher" -Recurse -Force -Exclude "*.msi", "*.exe" -ErrorAction SilentlyContinue
+Copy-Item "C:\ProgramData\Riot Games\Metadata" -Destination "D:\update\riot\Metadata" -Recurse -Force -ErrorAction SilentlyContinue
